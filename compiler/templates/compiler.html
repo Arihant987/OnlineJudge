@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Compiler</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/theme/dracula.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        form {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-family: 'Times New Roman', Times, serif;
+            color: green;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: black;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .CodeMirror {
+            height: 300px;
+            font-size: 16px;
+            border: 1px solid green;
+            border-radius: 5px;
+            margin-bottom: 24px;
+        }
+
+        button {
+            color: white;
+            background-color: #4CAF50; /* Green */
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker Green */
+        }
+
+        .custom-select {
+            display: inline-block;
+            width: auto;
+            min-width: 200px;
+            padding: 10px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #444;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-position: right 10px center;
+            background-repeat: no-repeat;
+            background-size: 12px;
+        }
+
+        .custom-select:focus {
+            border-color: #6e9df4;
+            outline: none;
+            box-shadow: 0 0 5px rgba(110, 157, 244, 0.5);
+        }
+
+        .error-message {
+            color: red;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Code Compiler</h2>
+    <form method="post">
+        {% csrf_token %}
+        <label for="id_language">Language:</label>
+        <select id="id_language" name="language" class="custom-select">
+            <option value="py">Python</option>
+            <option value="cpp">C++</option>
+            <!-- Add more options as needed -->
+        </select>
+        <div>
+            <label for="codearea">Code Area</label>
+            <textarea id="codearea" name="code"></textarea>
+        </div>
+        <div>
+            <label for="input_data">Input Data</label>
+            <textarea id="input_data" name="input_data"></textarea>
+        </div>
+        <button type="submit">Run Code</button>
+        {% if error_message %}
+            <div class="error-message">{{ error_message }}</div>
+        {% endif %}
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/addon/edit/closebrackets.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.2/addon/edit/matchbrackets.min.js"></script>
+    <script>
+        var codeEditor = CodeMirror.fromTextArea(document.getElementById("codearea"), {
+            mode: "python",
+            lineNumbers: true,
+            indentUnit: 4,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            theme: "dracula",
+            extraKeys: {
+                Tab: function(cm) {
+                    var spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+                    cm.replaceSelection(spaces);
+                }
+            }
+        });
+
+        var inputEditor = CodeMirror.fromTextArea(document.getElementById("input_data"), {
+            mode: "text/plain",
+            lineNumbers: true,
+            indentUnit: 4,
+            theme: "dracula"
+        });
+
+        document.getElementById("id_language").addEventListener("change", function() {
+            var language = this.value;
+            if (language === "py") {
+                codeEditor.setOption("mode", "python");
+            } else if (language === "cpp") {
+                codeEditor.setOption("mode", "text/x-c++src");
+            }
+        });
+
+        // Custom styling for comments in CodeMirror
+        CodeMirror.defineMode("customPython", function(config, parserConfig) {
+            var pythonMode = CodeMirror.getMode(config, "python");
+            return CodeMirror.multiplexingMode(pythonMode, {
+                open: /#/,
+                close: /$/,
+                mode: CodeMirror.getMode(config, "text/x-comment"),
+                delimStyle: "custom-comment"
+            });
+        });
+
+        CodeMirror.defineMode("customC++", function(config, parserConfig) {
+            var cppMode = CodeMirror.getMode(config, "text/x-c++src");
+            return CodeMirror.multiplexingMode(cppMode, {
+                open: /\/\*/,
+                close: /\*\//,
+                mode: CodeMirror.getMode(config, "text/x-comment"),
+                delimStyle: "custom-comment"
+            });
+        });
+
+        codeEditor.setOption("mode", "customPython");
+
+        document.getElementById("id_language").addEventListener("change", function() {
+            var language = this.value;
+            if (language === "py") {
+                codeEditor.setOption("mode", "customPython");
+            } else if (language === "cpp") {
+                codeEditor.setOption("mode", "customC++");
+            }
+        });
+
+        // Adding custom CSS for comments
+        var customCSS = document.createElement("style");
+        customCSS.innerHTML = ".cm-comment { color: #f1fa8c !important; }";
+        document.head.appendChild(customCSS);
+    </script>
+</body>
+</html>

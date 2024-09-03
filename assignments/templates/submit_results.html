@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submission Result</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+        .result {
+            font-size: 20px;
+            margin-top: 20px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Submission Result</h1>
+        <div class="result {% if verdict == 'Correct' %}correct{% else %}incorrect{% endif %}">
+            {{ verdict }}
+        </div>
+        <h2>Your Output:</h2>
+        <pre>{{ submission.output_data }}</pre>
+        <h2>Expected Outputs:</h2>
+        <ul>
+            {% for correct_output in correct_results %}
+                <li><pre>{{ correct_output }}</pre></li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

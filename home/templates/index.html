@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONLINE JUDGE</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure full viewport height */
+        }
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* Header Styles */
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 20px; /* Add padding from above */
+        }
+        header h1 {
+            margin: 0;
+            font-size: 35px;
+            color: #007bff; /* Blue color for heading */
+        }
+        /* Navigation Styles */
+        .navbar {
+            display: flex;
+            align-items: center; /* Align items vertically */
+            justify-content: space-between; /* Space between menu toggle and menu */
+            background-color: #343a40; /* Dark background color */
+            padding: 10px 20px; /* Padding around the navbar */
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+        }
+        .menu-toggle {
+            color: #fff; /* White color */
+            font-size: 24px;
+            cursor: pointer;
+            background-color: transparent;
+            border: none;
+            transition: opacity 0.3s ease;
+        }
+        .menu-toggle:hover {
+            opacity: 0.7;
+        }
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Align items to the start (side) */
+            background-color: #343a40; /* Dark background color */
+            border-radius: 8px;
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.3s ease-out;
+            position: absolute; /* Ensure it stays in place */
+            width: 200px; /* Width of the menu */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+            top: 60px; /* Adjust position to avoid overlapping */
+            right: 20px; /* Adjust position to align with toggle */
+        }
+        .menu.show {
+            max-height: 300px; /* Adjust max-height to show menu items */
+        }
+        .menu li {
+            width: 100%;
+            border-bottom: 1px solid #1d2124; /* Dark border for menu items */
+        }
+        .menu a {
+            display: block;
+            padding: 12px 20px; /* Increased padding for better touch/click area */
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+        .menu a:hover {
+            background-color: #555; /* Darker background on hover */
+        }
+        /* Main Content Styles */
+        .main-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1; /* Take remaining space */
+        }
+        .main-content h1 {
+            color: #dc3545; /* Red color for heading */
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .feature-box {
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f1f1f1;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .feature-box h3 {
+            color: #007bff; /* Blue color for heading */
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .feature-box p {
+            color: #555;
+            font-size: 18px;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column; /* Stack items vertically on smaller screens */
+                align-items: center; /* Center items vertically */
+            }
+            .menu {
+                width: 100%; /* Full width for menu on smaller screens */
+                max-height: 0; /* Initially hide menu on smaller screens */
+                position: absolute; /* Take full width when opened */
+                top: 50px; /* Adjust top position as needed */
+                right: 0;
+                background-color: #343a40; /* Dark background color */
+                transition: max-height 0.3s ease-out;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Box shadow for depth */
+            }
+            .menu.show {
+                max-height: 300px; /* Adjust max-height to show menu items */
+            }
+            .menu-toggle {
+                margin: 0; /* Remove margin for toggle icon */
+                position: absolute; /* Position toggle icon */
+                top: 10px;
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Online Judge</h1>
+        </header>
+        <div class="navbar">
+            <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+            <ul class="menu">
+                <li><a href="/assignments">Assignments</a></li>
+                <li><a href="#">Contests</a></li>
+                <li><a href="/about">About Us</a></li>
+                <li><a href="/contact">Contact Us</a></li>
+                <li><a href="/auth/register">Register</a></li>
+                <li><a href="/auth/login">Login</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <h1>Welcome to our Online Judge Platform</h1>
+            <div class="feature-box">
+                <h3>Solve Coding Challenges</h3>
+                <p>Sharpen your coding skills with a wide range of problems in different programming languages.</p>
+            </div>
+            <div class="feature-box">
+                <h3>Prepare for Contests</h3>
+                <p>Practice for competitive programming contests and technical interviews.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            var menu = document.querySelector('.menu');
+            menu.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>
+

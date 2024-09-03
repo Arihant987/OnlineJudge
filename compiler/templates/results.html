@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Execution Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f7;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: green;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #f7f7f7;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 14px;
+            color: #333;
+            white-space: pre-wrap;
+            border: 1px solid #ccc;
+        }
+
+        a {
+            color: green;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 1px solid green;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            background-color: #f0f4f7;
+            border-color: #3e8e41;
+        }
+
+        .label {
+            font-weight: bold;
+            color: black;
+            font-family: 'Times New Roman', Times, serif;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Execution Result</h1>
+        <p><span class="label">Language:</span> {{ submission.language }}</p>
+        <p><span class="label">Code:</span></p>
+        <pre>{{ submission.code }}</pre>
+        <p><span class="label">Input:</span></p>
+        <pre>{{ submission.input_data }}</pre>
+        <p><span class="label">Output:</span></p>
+        <pre>{{ submission.output_data }}</pre>
+        <a href="{% url 'submit' %}">Run another code</a>
+    </div>
+</body>
+</html>
